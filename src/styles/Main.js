@@ -26,6 +26,16 @@ export default StyleSheet.create({
         fontSize:12,
         color:'black'
     },
+    textNormalRed:{
+        fontFamily:'Poppins-Regular',
+        fontSize:12,
+        color:DangerColor
+    },
+    textNormalGreen:{
+        fontFamily:'Poppins-Regular',
+        fontSize:12,
+        color:SuccessColor
+    },
     textNormalBold:{
         fontFamily:'Poppins-Bold',
         fontSize:12,

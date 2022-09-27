@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Text, View, TextInput, TouchableOpacity, Image } from 'react-native'
+import {Text, View, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Icon, Button } from '@rneui/themed';
 
@@ -7,7 +7,7 @@ import LogoApp from '../../assets/logo.png'
 
 import styles from '../styles/Main';
 
-const Login = () => {
+const Login = ({navigation}) => {
 
     const [Email, setEmail] = useState('')
     const [Password, setPassword] = useState('')
@@ -38,12 +38,12 @@ const Login = () => {
                     </View>
                     <View style={styles.Devider10}></View>
                     <View style={styles.InputBoxGroup}>
-                        <Icon type='font-awesome' size={20} name='user' />
+                        <Icon type='font-awesome' size={16} name='envelope' />
                         <TextInput 
                             placeholder='Alamat Email'
                             keyboardType='email-address'
-                            value={Email}
-                            onChange={value=>setEmail(value)}
+                            defaultValue={Email}
+                            onChangeText={value=>setEmail(value)}
                             style={styles.textInputGroup}
                         />
                     </View>
@@ -52,8 +52,8 @@ const Login = () => {
                         <Icon type='font-awesome' size={20} name='lock' />
                         <TextInput 
                             placeholder='Password'
-                            value={Password}
-                            onChange={value=>setPassword(value)}
+                            defaultValue={Password}
+                            onChangeText={value=>setPassword(value)}
                             style={styles.textInputGroup}
                             secureTextEntry={PasswordVisibility}
                         />
@@ -65,6 +65,13 @@ const Login = () => {
                     <TouchableOpacity style={styles.BtnSuccess}>
                         <Text style={styles.TextBtnWhiteLarge}>MASUK</Text>
                     </TouchableOpacity>
+                    <View style={styles.Devider10}></View>
+                    <View style={styles.Center}>
+                        <Text style={styles.textNormal}>Belum memiliki akun?</Text>
+                        <TouchableOpacity onPress={()=>navigation.navigate('Register')} style={{borderBottomColor:'black', borderBottomWidth:0.5}}>
+                            <Text style={styles.textNormalBold}>DAFTAR DISINI!</Text>
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.Devider10}></View>
                 </View>
             </View>
