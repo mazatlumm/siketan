@@ -22,30 +22,17 @@ export const SimpanLokal = async (value, key) => {
 export const BacaLokal = async (key) => {
     try {
         const value = await AsyncStorage.getItem(key)
-        if(value != null) {
-            console.log('Data ' + key + ' : ' + value)
-        }else{
-            console.log('Data ' + key + ' : ' + value)
-        }
-        return (value);
-      } catch(e) {
-        // error reading value
-        console.log('Data ' + key + ' : ' + e)
-      }
+        return(value);
+    } catch(e) {
+        return(e);
+    }
 }
 
 export const BacaLokalJson = async (key) => {
     try {
         const jsonValue = await AsyncStorage.getItem(key)
-        if(jsonValue != null){
-            console.log(key + ' : ' + jsonValue);
-            return (jsonValue);
-        }else{
-            console.log(key + ' : ' + jsonValue);
-            return null;
-        }
+        return(jsonValue)
     } catch(e) {
-    // error reading value
-        return null;
+        return(e);
     }
 }

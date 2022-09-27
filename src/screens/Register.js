@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import {Text, View, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native'
+import {Text, View, TextInput, TouchableOpacity, Image, ScrollView, ToastAndroid } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Icon, Button } from '@rneui/themed';
+import { POSTREQ } from '../controllers';
 
 import LogoApp from '../../assets/logo.png'
 
@@ -66,7 +67,53 @@ const Register = ({navigation}) => {
     }
 
     const Daftar = () => {
-      console.log(Nama);
+      if(StatusEmail == 'valid'){
+        if(StatusPassword == 'valid'){
+          const ParameterURL = {
+            nama : Nama,
+            no_hp : NoHP,
+            email : Email,
+            password : Password,
+            role : 'Pengguna Umum',
+          }
+          POSTREQ('api/user/register', ParameterURL).then(response=>{
+              console.log(response.status);
+              if(response.status == true){
+                setNama('');
+                setEmail('');
+                setNoHP('');
+                setPassword('');
+                setStatusEmail('');
+                setStatusPassword('');
+                ToastAndroid.showWithGravity(
+                  "Berhasil membuat akun, silahkan login",
+                  ToastAndroid.SHORT,
+                  ToastAndroid.CENTER,
+                );
+              }else{
+                ToastAndroid.showWithGravity(
+                  response.message,
+                  ToastAndroid.SHORT,
+                  ToastAndroid.CENTER,
+                );
+              }
+          });
+        }else{  
+          console.log('password tidak valid')
+          ToastAndroid.showWithGravity(
+            "Password kurang aman, mohon diperbaiki",
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+          );
+        }
+      }else{
+        console.log('email tidak valid')
+        ToastAndroid.showWithGravity(
+          "Email tidak valid, mohon diperbaiki",
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
+      }
     }
 
     return (
@@ -87,6 +134,7 @@ const Register = ({navigation}) => {
                           <Icon type='font-awesome' size={20} name='user' />
                           <TextInput 
                               placeholder='Nama Lengkap'
+                              value={Nama}
                               defaultValue={Nama}
                               onChangeText={Nama=>setNama(Nama)}
                               style={styles.textInputGroup}
@@ -98,6 +146,7 @@ const Register = ({navigation}) => {
                           <TextInput 
                               placeholder='No HP/WA'
                               keyboardType='phone-pad'
+                              value={NoHP}
                               defaultValue={NoHP}
                               onChangeText={NoHp=>setNoHP(NoHp)}
                               style={styles.textInputGroup}
@@ -109,6 +158,7 @@ const Register = ({navigation}) => {
                           <TextInput 
                               placeholder='Alamat Email'
                               keyboardType='email-address'
+                              value={Email}
                               defaultValue={Email}
                               onChangeText={Email=>CekValidasiEmail(Email)}
                               style={styles.textInputGroup}
@@ -137,6 +187,7 @@ const Register = ({navigation}) => {
                           <Icon type='font-awesome' size={20} name='lock' />
                           <TextInput 
                               placeholder='Password'
+                              value={Password}
                               defaultValue={Password}
                               onChangeText={Password=>CekKekuatanPassword(Password)}
                               style={styles.textInputGroup}

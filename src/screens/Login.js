@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react'
-import {Text, View, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native'
+import {Text, View, TextInput, TouchableOpacity, Image, ScrollView, ToastAndroid } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Icon, Button } from '@rneui/themed';
+import { POSTREQ } from '../controllers';
+import { SimpanLokalJson } from '../localstorage';
 
 import LogoApp from '../../assets/logo.png'
 
@@ -22,6 +24,36 @@ const Login = ({navigation}) => {
         if(PasswordVisibility == true){
             setEye('eye');
         }
+    }
+
+    const LoginReq = () => {
+        const ParameterURL = {
+            email : Email,
+            password : Password,
+          }
+          POSTREQ('api/user/login', ParameterURL).then(response=>{
+              console.log(response);
+              if(response.status == true){
+                SimpanLokalJson(response, '@DataUser').then(LocalStorage=>{
+                    if(LocalStorage){
+                        navigation.navigate('Dashboard');
+                    }else{
+                        console.log('Data Tidak Tersimpan di Local Storage')
+                    }
+                })
+                ToastAndroid.showWithGravity(
+                  "Login Success",
+                  ToastAndroid.SHORT,
+                  ToastAndroid.CENTER,
+                );
+              }else{
+                ToastAndroid.showWithGravity(
+                  "Email & Password Tidak Sesuai",
+                  ToastAndroid.SHORT,
+                  ToastAndroid.BOTTOM,
+                );
+              }
+          });
     }
 
     return (
@@ -62,7 +94,7 @@ const Login = ({navigation}) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.Devider5}></View>
-                    <TouchableOpacity style={styles.BtnSuccess}>
+                    <TouchableOpacity onPress={()=>LoginReq()} style={styles.BtnSuccess}>
                         <Text style={styles.TextBtnWhiteLarge}>MASUK</Text>
                     </TouchableOpacity>
                     <View style={styles.Devider10}></View>
