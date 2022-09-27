@@ -1,0 +1,41 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Philosopher-Bold.ttf",
+      "sha1": "31b8bc20d14b922ba8da54416f85a269d281d484"
+    },
+    {
+      "path": "assets/fonts/Philosopher-BoldItalic.ttf",
+      "sha1": "f83cc384520a79bc6b76ae7b8a04ed7d457b8921"
+    },
+    {
+      "path": "assets/fonts/Philosopher-Italic.ttf",
+      "sha1": "29130108001b5f46e642506b27c196774ea9ebf0"
+    },
+    {
+      "path": "assets/fonts/Philosopher-Regular.ttf",
+      "sha1": "c2fa6e9b227cedd373083eb22bdf7e496b4e7831"
+    },
+    {
+      "path": "assets/fonts/Poppins-Bold.ttf",
+      "sha1": "875cf0cecd647bcf22e79d633d868c1b1ec98dfa"
+    },
+    {
+      "path": "assets/fonts/Poppins-Italic.ttf",
+      "sha1": "e2bfcd56016c3c915221ef1c5fc1a17b0776eb91"
+    },
+    {
+      "path": "assets/fonts/Poppins-Light.ttf",
+      "sha1": "e247a92158e112f8bf7b638c8d95381d66b00dbb"
+    },
+    {
+      "path": "assets/fonts/Poppins-Regular.ttf",
+      "sha1": "fdd3002e7d814ee47c1c1b8487c72c6bbb3a2d00"
+    },
+    {
+      "path": "assets/fonts/Poppins-Thin.ttf",
+      "sha1": "09ba4dcd5509c8085bf88c665dcc51cbdfced27b"
+    }
+  ]
+}
