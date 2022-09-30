@@ -37,6 +37,10 @@ const Login = ({navigation}) => {
                 SimpanLokalJson(response, '@DataUser').then(LocalStorage=>{
                     if(LocalStorage){
                         navigation.navigate('Dashboard');
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'Dashboard' }],
+                        });
                     }else{
                         console.log('Data Tidak Tersimpan di Local Storage')
                     }
@@ -73,6 +77,7 @@ const Login = ({navigation}) => {
                         <Icon type='font-awesome' size={16} name='envelope' />
                         <TextInput 
                             placeholder='Alamat Email'
+                            placeholderTextColor='grey'
                             keyboardType='email-address'
                             defaultValue={Email}
                             onChangeText={value=>setEmail(value)}
@@ -84,6 +89,7 @@ const Login = ({navigation}) => {
                         <Icon type='font-awesome' size={20} name='lock' />
                         <TextInput 
                             placeholder='Password'
+                            placeholderTextColor='grey'
                             defaultValue={Password}
                             onChangeText={value=>setPassword(value)}
                             style={styles.textInputGroup}

@@ -14,3 +14,17 @@ export const POSTREQ = async (end_point, parameter) => {
     });
 
 }
+
+export const GETREQ = async (end_point, parameter) => {
+    return await axios.get(URL + end_point, {
+        params:parameter
+    })
+    .then(response => {
+        if(response.data.status == true){
+            return(response.data)
+        }
+    })
+    .catch(e => {
+        return(e.response.data)
+    });
+}

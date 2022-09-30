@@ -19,6 +19,15 @@ export const SimpanLokal = async (value, key) => {
       }
 }
 
+export const HapusLokal = async (key) => {
+    try {
+        await AsyncStorage.removeItem(key)
+        return true;
+      } catch (e) {
+        return false;
+      }
+}
+
 export const BacaLokal = async (key) => {
     try {
         const value = await AsyncStorage.getItem(key)

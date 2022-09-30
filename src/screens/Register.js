@@ -18,6 +18,7 @@ const Register = ({navigation}) => {
     const [PasswordVisibility, setPasswordVisibility] = useState(true)
     const [StatusPassword, setStatusPassword] = useState('')
     const [StatusEmail, setStatusEmail] = useState('')
+    const [ValidasiPhone, setValidasiPhone] = useState('')
 
     const ChangePasswordVisibility = () => {
         setPasswordVisibility(!PasswordVisibility);
@@ -39,6 +40,21 @@ const Register = ({navigation}) => {
       setStatusEmail('valid');
       return;
     }
+
+    const FormatNoHp = (no_hp) => {
+      setNoHP(no_hp)
+      var phoneno = /^(\+62|62|0)8[1-9][0-9]{6,9}$/; 
+      if(no_hp.match(phoneno)){
+          console.log('no valid')
+          if (no_hp.startsWith('0')) {
+              no_hp = '62' + no_hp.slice(1);
+              setNoHP(no_hp);
+          }
+          setValidasiPhone('valid')
+      }else{
+          setValidasiPhone('')
+      }
+  }
 
     const CekKekuatanPassword = (password) => {
       setPassword(password)
@@ -67,52 +83,61 @@ const Register = ({navigation}) => {
     }
 
     const Daftar = () => {
-      if(StatusEmail == 'valid'){
-        if(StatusPassword == 'valid'){
-          const ParameterURL = {
-            nama : Nama,
-            no_hp : NoHP,
-            email : Email,
-            password : Password,
-            role : 'Pengguna Umum',
+      if(ValidasiPhone == 'valid'){
+        if(StatusEmail == 'valid'){
+          if(StatusPassword == 'valid'){
+            const ParameterURL = {
+              nama : Nama,
+              no_telp : NoHP,
+              email : Email,
+              password : Password,
+              role : 'Pengguna Umum',
+            }
+            POSTREQ('api/user/register', ParameterURL).then(response=>{
+                console.log(response.status);
+                if(response.status == true){
+                  setNama('');
+                  setEmail('');
+                  setNoHP('');
+                  setPassword('');
+                  setStatusEmail('');
+                  setStatusPassword('');
+                  ToastAndroid.showWithGravity(
+                    "Berhasil membuat akun, silahkan login",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER,
+                  );
+                }else{
+                  ToastAndroid.showWithGravity(
+                    response.message,
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER,
+                  );
+                }
+            });
+          }else{  
+            console.log('password tidak valid')
+            ToastAndroid.showWithGravity(
+              "Password kurang aman, mohon diperbaiki",
+              ToastAndroid.SHORT,
+              ToastAndroid.BOTTOM,
+            );
           }
-          POSTREQ('api/user/register', ParameterURL).then(response=>{
-              console.log(response.status);
-              if(response.status == true){
-                setNama('');
-                setEmail('');
-                setNoHP('');
-                setPassword('');
-                setStatusEmail('');
-                setStatusPassword('');
-                ToastAndroid.showWithGravity(
-                  "Berhasil membuat akun, silahkan login",
-                  ToastAndroid.SHORT,
-                  ToastAndroid.CENTER,
-                );
-              }else{
-                ToastAndroid.showWithGravity(
-                  response.message,
-                  ToastAndroid.SHORT,
-                  ToastAndroid.CENTER,
-                );
-              }
-          });
-        }else{  
-          console.log('password tidak valid')
+        }else{
+          console.log('email tidak valid')
           ToastAndroid.showWithGravity(
-            "Password kurang aman, mohon diperbaiki",
+            "Email tidak valid, mohon diperbaiki",
             ToastAndroid.SHORT,
             ToastAndroid.BOTTOM,
           );
         }
       }else{
-        console.log('email tidak valid')
-        ToastAndroid.showWithGravity(
-          "Email tidak valid, mohon diperbaiki",
-          ToastAndroid.SHORT,
-          ToastAndroid.BOTTOM,
-        );
+          console.log('nomor handphone tidak valid')
+          ToastAndroid.showWithGravity(
+            "Nomor WA tidak valid, mohon diperbaiki",
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+          );
       }
     }
 
@@ -134,6 +159,7 @@ const Register = ({navigation}) => {
                           <Icon type='font-awesome' size={20} name='user' />
                           <TextInput 
                               placeholder='Nama Lengkap'
+                              placeholderTextColor='grey'
                               value={Nama}
                               defaultValue={Nama}
                               onChangeText={Nama=>setNama(Nama)}
@@ -145,10 +171,11 @@ const Register = ({navigation}) => {
                           <Icon type='font-awesome' size={20} name='phone' />
                           <TextInput 
                               placeholder='No HP/WA'
+                              placeholderTextColor='grey'
                               keyboardType='phone-pad'
                               value={NoHP}
                               defaultValue={NoHP}
-                              onChangeText={NoHp=>setNoHP(NoHp)}
+                              onChangeText={NoHp=>FormatNoHp(NoHp)}
                               style={styles.textInputGroup}
                           />
                       </View>
@@ -157,6 +184,7 @@ const Register = ({navigation}) => {
                           <Icon type='font-awesome' size={16} name='envelope' />
                           <TextInput 
                               placeholder='Alamat Email'
+                              placeholderTextColor='grey'
                               keyboardType='email-address'
                               value={Email}
                               defaultValue={Email}
@@ -187,6 +215,7 @@ const Register = ({navigation}) => {
                           <Icon type='font-awesome' size={20} name='lock' />
                           <TextInput 
                               placeholder='Password'
+                              placeholderTextColor='grey'
                               value={Password}
                               defaultValue={Password}
                               onChangeText={Password=>CekKekuatanPassword(Password)}

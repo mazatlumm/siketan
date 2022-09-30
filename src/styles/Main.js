@@ -5,6 +5,11 @@ const WarningColor = "#e47200";
 const DangerColor = "#c61a09";
 
 export default StyleSheet.create({
+    container:{
+        flex:1,
+        marginHorizontal:10,
+        backgroundColor:'white'
+    },
     containerCenter:{
         flex:1,
         justifyContent:'center',
@@ -15,91 +20,107 @@ export default StyleSheet.create({
         alignItems:'center',
         width:'100%',
     },  
+    Devider3:{
+        marginVertical:3
+    },
     Devider5:{
         marginVertical:5
     },
     Devider10:{
         marginVertical:10
     },
+    textSmallGreyBold:{
+        fontFamily:'Poppins-Bold',
+        fontSize:10,
+        color:'grey'
+    },
     textNormal:{
         fontFamily:'Poppins-Regular',
-        fontSize:12,
+        fontSize:10,
         color:'black'
     },
     textNormalRed:{
         fontFamily:'Poppins-Regular',
-        fontSize:12,
+        fontSize:10,
         color:DangerColor
     },
     textNormalGreen:{
         fontFamily:'Poppins-Regular',
-        fontSize:12,
+        fontSize:10,
         color:SuccessColor
     },
     textNormalBold:{
         fontFamily:'Poppins-Bold',
-        fontSize:12,
+        fontSize:10,
         color:'black',
-        fontWeight:'bold'
     },
     textLarge:{
         fontFamily:'Poppins-Regular',
-        fontSize:14,
+        fontSize:12,
         color:'black'
     },
     textLargeBold:{
         fontFamily:'Poppins-Bold',
-        fontSize:14,
+        fontSize:12,
         color:'black',
-        fontWeight:'bold'
     },
     B1:{
         fontFamily:'Poppins-Regular',
-        fontSize:24,
+        fontSize:22,
         color:'black',
     },
     B1Bold:{
         fontFamily:'Poppins-Bold',
-        fontSize:24,
+        fontSize:22,
         color:'black',
-        fontWeight:'bold'
     },
     B2:{
         fontFamily:'Poppins-Regular',
-        fontSize:20,
+        fontSize:18,
         color:'black',
     },
     B2Bold:{
         fontFamily:'Poppins-Bold',
-        fontSize:20,
+        fontSize:18,
         color:'black',
-        fontWeight:'bold'
+
     },
     B3:{
         fontFamily:'Poppins-Regular',
-        fontSize:18,
+        fontSize:14,
         color:'black',
     },
     B3Bold:{
         fontFamily:'Poppins-Bold',
-        fontSize:18,
+        fontSize:14,
         color:'black',
-        fontWeight:'bold'
+    },
+    B3BoldUnderline:{
+        fontFamily:'Poppins-Bold',
+        fontSize:14,
+        color:'black',
+        textDecorationLine:'underline'
     },
     B4:{
         fontFamily:'Poppins-Regular',
-        fontSize:16,
+        fontSize:12,
         color:'black',
     },
     B4Bold:{
         fontFamily:'Poppins-Bold',
-        fontSize:16,
+        fontSize:12,
         color:'black',
-        fontWeight:'bold'
     },
     BtnSuccess:{
         borderRadius:20,
         backgroundColor:SuccessColor,
+        paddingVertical:10,
+        alignItems:'center',
+        width:'100%',
+    },
+    BtnSuccessDisable:{
+        borderRadius:20,
+        backgroundColor:'#99ff99',
         paddingVertical:10,
         alignItems:'center',
         width:'100%',
@@ -127,13 +148,13 @@ export default StyleSheet.create({
     },
     TextBtnWhite:{
         fontFamily:'Poppins-Bold',
-        fontSize:12,
+        fontSize:10,
         color:'white',
         fontWeight:'bold'
     },
     TextBtnWhiteLarge:{
         fontFamily:'Poppins-Bold',
-        fontSize:14,
+        fontSize:12,
         color:'white',
         fontWeight:'bold'
     },
@@ -149,6 +170,77 @@ export default StyleSheet.create({
         backgroundColor:'white',
         borderRadius:10,
         paddingHorizontal:20,
+        paddingVertical:10,
+        width:'100%'
+    },
+    CardProduk:{
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        backgroundColor:'white',
+        borderRadius:10,
+        paddingVertical:15,
+        flex:1,
+        marginVertical:5,
+        marginHorizontal:5,
+        alignItems:'center'
+    },
+    CardRectangle:{
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        backgroundColor:'white',
+        paddingHorizontal:20,
+        paddingVertical:10,
+    },
+    CardGreen:{
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        backgroundColor:'#77C66E',
+        borderRadius:10,
+        paddingHorizontal:20,
+        paddingVertical:10,
+        width:'100%'
+    },
+    CardWhiteFull:{
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        backgroundColor:'white',
+        paddingVertical:10,
+        width:'100%'
+    },
+    CardGreenFull:{
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        backgroundColor:'#77C66E',
         paddingVertical:10,
         width:'100%'
     },
@@ -176,12 +268,12 @@ export default StyleSheet.create({
     },
     textInput:{
         fontFamily:'Poppins-Regular',
-        fontSize:12,
+        fontSize:10,
         color:'black',
     },
     textInputGroup:{
         fontFamily:'Poppins-Regular',
-        fontSize:12,
+        fontSize:10,
         color:'black',
         flex:1,
         marginLeft:5
@@ -191,4 +283,77 @@ export default StyleSheet.create({
         height:150,
         resizeMode:'contain'
     },
+    ImageMedium:{
+        width:80,
+        height:80,
+        resizeMode:'contain'
+    },
+    UnderlineStrike : {
+        borderBottomColor:'black',
+        borderBottomWidth:0.5,
+    },
+    UnderlineBoldGreen : {
+        borderBottomColor:SuccessColor,
+        borderWidth:2,
+        borderRadius: 1,
+        borderStyle:'dashed',
+        height: 1,
+    },
+    MenuIcon:{
+        borderRadius:30,
+        width:60,
+        height:60,
+        alignItems:'center',
+        justifyContent:'center',
+        backgroundColor:'white',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    ImageMenuIcon:{
+        width:35,
+        height:35,
+        resizeMode:'contain'
+    },
+    FotoPetani:{
+        height:100,
+        width:80,
+        resizeMode:'contain'
+    },
+    ImageProduk:{
+        width:120,
+        height:120,
+        resizeMode:'stretch',
+        borderRadius:10,
+        marginHorizontal:5
+    },
+    PhotoProfile:{
+        width:80,
+        height:80,
+        borderRadius:80/2,
+        resizeMode:'contain',
+        borderWidth:0.5
+    },
+    CardPhotoProfile:{
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        backgroundColor:'white',
+        width:90,
+        height:90,
+        borderRadius:90/2,
+        resizeMode:'contain',
+        alignItems:'center',
+        justifyContent:'center'
+    }
 })

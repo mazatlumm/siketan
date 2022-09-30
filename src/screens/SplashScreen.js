@@ -8,8 +8,11 @@ import { BacaLokalJson } from '../localstorage';
 const SplashScreen = ({navigation}) => {
 
     useEffect(() => {
+      const unsubscribe = navigation.addListener('focus', () => {
         CekDataUser();
-    }, [])
+      });
+      return unsubscribe;
+    }, [navigation])
     
     const CekDataUser = () => {
         //cek data user baru hilangkan splashscreen
