@@ -203,6 +203,20 @@ export default StyleSheet.create({
         paddingHorizontal:20,
         paddingVertical:10,
     },
+    CardRectangleRow:{
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        backgroundColor:'white',
+        paddingHorizontal:20,
+        paddingVertical:10,
+        flexDirection:'row'
+    },
     CardGreen:{
         shadowColor: "#000",
         shadowOffset: {
@@ -270,13 +284,15 @@ export default StyleSheet.create({
         fontFamily:'Poppins-Regular',
         fontSize:10,
         color:'black',
+        paddingVertical:5
     },
     textInputGroup:{
         fontFamily:'Poppins-Regular',
         fontSize:10,
         color:'black',
         flex:1,
-        marginLeft:5
+        marginLeft:5,
+        paddingVertical:5
     },
     ImageLarge:{
         width:150,

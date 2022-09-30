@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, Modal, TextInput, Image, Alert, ScrollVie
 import React, {useState, useEffect} from 'react'
 import styles from '../styles/Main'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Icon, Rating } from '@rneui/base';
+import { Icon, CheckBox } from '@rneui/base';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
 import { GETREQ, POSTREQ } from '../controllers';
@@ -14,6 +14,7 @@ const Profile = ({navigation}) => {
 
     const [BaseURL, setBaseURL] = useState('https://alicestech.com/siketan/')
     const [LoadingApp, setLoadingApp] = useState(false)
+    const [Role, setRole] = useState('')
     const [IDUser, setIDUser] = useState('')
     const [Nama, setNama] = useState('')
     const [Pekerjaan, setPekerjaan] = useState('Pekerjaan')
@@ -35,11 +36,21 @@ const Profile = ({navigation}) => {
     const [ColorStar3, setColorStar3] = useState('black')
     const [ColorStar4, setColorStar4] = useState('black')
     const [ColorStar5, setColorStar5] = useState('black')
+    const [AlamatEmail, setAlamatEmail] = useState('')
+    const [ModalGantiRole, setModalGantiRole] = useState(false)
+    const [NamaUser, setNamaUser] = useState('')
+    const [PekerjaanUser, setPekerjaanUser] = useState('')
+    const [PengalamanUser, setPengalamanUser] = useState('')
+    const [RoleUser, setRoleUser] = useState('')
+    const [FotoUser, setFotoUser] = useState('')
+    const [CheckedRole1, setCheckedRole1] = useState(false)
+    const [CheckedRole2, setCheckedRole2] = useState(false)
 
     const GetDataUser = () => {
         BacaLokalJson('@DataUser').then(response => {
           const JsonResponse = JSON.parse(response);
           console.log(JsonResponse.result[0]);
+          setRole(JsonResponse.result[0].role)
           setIDUser(JsonResponse.result[0].id_user)
           setNama(JsonResponse.result[0].nama)
           setEmail(JsonResponse.result[0].email)
@@ -262,6 +273,109 @@ const Profile = ({navigation}) => {
             setIconStar5('star')
         }
     }
+
+    const CariUser = () => {
+        var parameter = {
+            email:AlamatEmail
+        }
+        GETREQ('api/user/cari', parameter).then(response=>{
+            console.log(response);
+            if(response.status == true){
+                setModalGantiRole(!ModalGantiRole);
+                const DataUser = response.result[0];
+                setNamaUser(DataUser.nama);
+                setPekerjaanUser(DataUser.pekerjaan);
+                setPengalamanUser(DataUser.pengalaman);
+                setRoleUser(DataUser.role);
+                if(DataUser.role == 'Pengguna Umum'){
+                    setCheckedRole1(true);
+                }
+                if(DataUser.role == 'Penyuluh'){
+                    setCheckedRole2(true);
+                }
+                if(DataUser.role == 'admin'){
+                    setCheckedRole1(false);
+                    setCheckedRole2(false);
+                }
+                if(DataUser.photo){
+                    setFotoUser(BaseURL+'upload/profile/'+DataUser.photo);
+                }else{
+                    setFotoUser('');
+                }
+            }else{
+                ToastAndroid.showWithGravity(
+                    "User Tidak Ditemukan",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.BOTTOM,
+                );
+            }
+        })
+    }
+
+    const AdminManagement = () => {
+        if(Role == 'admin'){
+            return (
+                <View>
+                    <Text style={styles.textLargeBold}>Ubah Role User</Text>
+                    <Text style={styles.textNormal}>Masukkan alamat email user yang akan diubah role-nya untuk mendapatkan akses lebih ke sistem aplikasi.</Text>
+                    <View style={styles.Devider5}></View>
+                    <View style={styles.InputBoxGroup}>
+                        <TextInput 
+                            defaultValue={AlamatEmail}
+                            value={AlamatEmail}
+                            placeholder='Masukkan Alamat Email'
+                            placeholderTextColor='grey'
+                            onChangeText={AlamatEmail=>setAlamatEmail(AlamatEmail)}
+                            keyboardType='email-address'
+                            style={styles.textInputGroup}
+                        />
+                        <TouchableOpacity onPress={()=>CariUser()} style={{borderLeftWidth:0.5, paddingLeft:10}}>
+                            <Icon type='font-awesome' name='search' size={16} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.Devider10}></View>
+                    <View style={styles.UnderlineBoldGreen}></View>
+                    <View style={styles.Devider10}></View>
+                </View>
+            )
+        }
+    }
+
+    const GantiRole = (type) => {
+        if(type == 'umum'){
+            setCheckedRole1(true);
+            setCheckedRole2(false);
+            setRoleUser('Pengguna Umum')
+        }
+        if(type == 'penyuluh'){
+            setCheckedRole1(false);
+            setCheckedRole2(true);
+            setRoleUser('Penyuluh')
+        }
+    }
+
+    const SimpanRoleUser = () => {
+        var parameter = {
+            email:AlamatEmail,
+            role:RoleUser
+        }
+        POSTREQ('api/user/ganti_role', parameter).then(response=>{
+            if(response.status == true){
+                setModalGantiRole(!ModalGantiRole);
+                ToastAndroid.showWithGravity(
+                    "Role Berhasil Diubah",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.BOTTOM,
+                );
+            }else{
+                ToastAndroid.showWithGravity(
+                    "Role Gagal Diubah",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.BOTTOM,
+                );
+            }
+        });
+    }
     
 
   return (
@@ -278,6 +392,77 @@ const Profile = ({navigation}) => {
           <View style={{flex: 1, alignItems: "center", justifyContent: 'center', padding: 10, backgroundColor:'rgba(0, 0, 0, 0.5)'}}>
             <View style={{paddingHorizontal:20, paddingVertical:20, marginHorizontal:20, backgroundColor:'white', borderRadius:10, width:'100%', alignItems:'center', justifyContent:'center'}}>
               <Text style={styles.textNormal}>Tunggu sebentar...</Text>
+            </View>
+        </View>
+      </Modal>
+
+        {/* Modal Ganti Role */}
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={ModalGantiRole}
+          onRequestClose={() => {
+            setModalGantiRole(!ModalGantiRole);
+          }}
+        >
+          <View style={{flex: 1, alignItems: "center", justifyContent: 'flex-end', padding: 10, backgroundColor:'rgba(0, 0, 0, 0.5)'}}>
+            <View style={{paddingHorizontal:20, paddingVertical:20, marginHorizontal:20, backgroundColor:'white', borderRadius:10, width:'100%', justifyContent:'center'}}>
+                <TouchableOpacity onPress={()=>setModalGantiRole(!ModalGantiRole)} style={{position:'absolute', right:10, top:10}}>
+                    <Icon type='font-awesome' name='close' size={16} />
+                </TouchableOpacity>
+                <Text style={styles.textLargeBold}>Detail User</Text>
+                <View style={styles.Devider5}></View>
+                <View style={styles.CardRectangle}>
+            <View style={{flexDirection:'row', alignItems:'center'}}>
+                <TouchableOpacity style={styles.CardPhotoProfile}>
+                    {FotoUser ? 
+                    <Image source={{uri:FotoUser}} style={styles.PhotoProfile} />
+                    :
+                    <Image source={UserPhotoProfile} style={styles.PhotoProfile} />
+                    }
+                </TouchableOpacity>
+                <View style={{marginLeft:10}}>
+                    <Text style={styles.textNormalBold}>Nama : {NamaUser}</Text>
+                    <Text style={styles.textNormal}>Pekerjaan : {PekerjaanUser}</Text>
+                    <Text style={styles.textNormal}>Pengalaman : {PengalamanUser} tahun</Text>
+                    <Text style={styles.textNormal}>Role saat ini : {RoleUser}</Text>
+                    <View style={styles.Devider5}></View>
+                </View>
+            </View>
+            {RoleUser != 'admin' ?
+                <View>
+                    <View style={styles.Devider5}></View>
+                    <Text style={styles.textNormalBold}>Silahkan mengganti role user</Text>
+                    <View style={styles.Devider5}></View>
+                    <TouchableOpacity onPress={() => GantiRole('penyuluh')}>
+                        <CheckBox
+                            disabled={true}
+                            title='Penyuluh'
+                            textStyle={styles.textLarge}
+                            checked={CheckedRole2}
+                            containerStyle={{margin:0, padding:0}}
+                        />
+                    </TouchableOpacity>
+                    <View style={styles.Devider5}></View>
+                    <TouchableOpacity onPress={() => GantiRole('umum')}>
+                        <CheckBox
+                            disabled={true}
+                            title='Pengguna Umum'
+                            textStyle={styles.textLarge}
+                            checked={CheckedRole1}
+                            containerStyle={{margin:0, padding:0}}
+                        />
+                    </TouchableOpacity>
+                    <View style={styles.Devider5}></View>
+                    <TouchableOpacity onPress={()=>SimpanRoleUser()} style={styles.BtnSuccess}>
+                        <Text style={styles.TextBtnWhite}>Simpan Perubahan</Text>
+                    </TouchableOpacity>
+                </View>
+                :
+                <View></View>
+            }
+        </View>
+                
             </View>
         </View>
       </Modal>
@@ -356,6 +541,7 @@ const Profile = ({navigation}) => {
 
         {/* Form Profile */}
         <View style={styles.CardRectangle}>
+            {AdminManagement()}
             <Text style={styles.textLargeBold}>Form Ubah Profile</Text>
             <Text style={styles.textNormal}>Silahkan melengkapi data Anda, data yang lengkap dapat membantu Anda dalam melakukan transaksi jual beli di dalam aplikasi.</Text>
             <View style={styles.Devider5}></View>

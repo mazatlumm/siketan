@@ -155,12 +155,12 @@ const Dashboard = ({navigation}) => {
             <View style={styles.Devider3}></View>
             <Text style={styles.textNormal}>Info Tani</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{alignItems:'center', flex:1}}>
+          <TouchableOpacity onPress={()=>navigation.navigate('DataPanen')} style={{alignItems:'center', flex:1}}>
             <View style={styles.MenuIcon}>
               <Image source={IconDataPanen} style={styles.ImageMenuIcon} />
             </View>
             <View style={styles.Devider3}></View>
-            <Text style={styles.textNormal}>Data Penen</Text>
+            <Text style={styles.textNormal}>Data Panen</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.Devider10}></View>

@@ -15,6 +15,7 @@ import KelolaProduk from './src/screens/toko_tani/KelolaProduk';
 import TokoTani from './src/screens/toko_tani/TokoTani';
 import Profile from './src/screens/Profile';
 import InfoTani from './src/screens/InfoTani';
+import DataPanen from './src/screens/DataPanen';
 
 
 const Stack = createNativeStackNavigator();
@@ -33,6 +34,7 @@ function App() {
         <Stack.Screen name="TokoTani" component={TokoTani} options={{headerShown:false}} />
         <Stack.Screen name="Profile" component={Profile} options={{headerShown:false}} />
         <Stack.Screen name="InfoTani" component={InfoTani} options={{headerShown:false}} />
+        <Stack.Screen name="DataPanen" component={DataPanen} options={{headerShown:false}} />
       </Stack.Navigator>
     </NavigationContainer>
   );
