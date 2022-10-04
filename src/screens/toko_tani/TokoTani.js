@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Modal, TextInput, Image, Alert, ScrollView, FlatList, Dimensions } from 'react-native'
+import { View, Text, TouchableOpacity, Modal, TextInput, Image, Alert, ScrollView, FlatList, Dimensions, Linking } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import styles from '../../styles/Main'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -54,6 +54,28 @@ const TokoTani = ({navigation}) => {
     setDeskripsi(deskripsi);
     setFotoProduk(BaseURL+'upload/produk/'+foto);
     setModalDetilProduk(!ModalDetilProduk)
+  }
+
+  const WhatsAppLink = (nomorWA, penjual, nama_barang) => {
+    let msg = "Hai Pak/Bu "+ penjual +", Saya ingin membeli produk yang Anda pasarkan di Aplikasi SIKeTan yakni : " + nama_barang;
+    let mobile = nomorWA;
+    const regex = new RegExp("^0+(?!$)",'g');
+    var strMobileNumber = mobile.toString().replace(regex, "");
+    if(mobile){
+      if(msg){
+      // Kode negara 62 = Indonesia
+        let url = 'whatsapp://send?text=' + msg + '&phone=' + strMobileNumber;
+        Linking.openURL(url).then((data) => {
+          console.log('WhatsApp Opened');
+        }).catch(() => {
+          Alert.alert('Maaf', 'Silahkan install aplikasi Whatsapp terlebih dahulu');
+        });
+      }else{
+        Alert.alert('Maaf', 'Pesanan masih kosong');
+      }
+    }else{
+      Alert.alert('Maaf', 'Penjual Tidak Memasukkan Nomor WA/Telephone');
+    }
   }
 
   const Item = ({ id_produk, id_user, penjual, no_telp, nama_produk, stok, harga, deskripsi, foto, created, updated}) => (
@@ -132,7 +154,7 @@ const TokoTani = ({navigation}) => {
             <Text style={styles.textNormalBold}>Deskripsi Produk</Text>
             <Text style={styles.textNormal}>{Deskripsi}</Text>
             <View style={styles.Devider10}></View>
-            <TouchableOpacity style={styles.BtnSuccess}>
+            <TouchableOpacity onPress={()=> WhatsAppLink(NoHp, NamaPenjual, NamaProduk) } style={styles.BtnSuccess}>
               <Text style={styles.TextBtnWhite}>Hubungi Penjual</Text>
             </TouchableOpacity>
         </View>

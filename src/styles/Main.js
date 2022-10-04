@@ -284,6 +284,7 @@ export default StyleSheet.create({
         fontFamily:'Poppins-Regular',
         fontSize:10,
         color:'black',
+        marginLeft:5,
         paddingVertical:5
     },
     textInputGroup:{
