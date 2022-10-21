@@ -12,7 +12,7 @@ import UserPhotoProfile from '../../assets/boy.png'
 
 const Profile = ({navigation}) => {
 
-    const [BaseURL, setBaseURL] = useState('https://alicestech.com/siketan/')
+    const [BaseURL, setBaseURL] = useState('https://siketan.com/')
     const [LoadingApp, setLoadingApp] = useState(false)
     const [Role, setRole] = useState('')
     const [IDUser, setIDUser] = useState('')

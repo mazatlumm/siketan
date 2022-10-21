@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Modal, TextInput, Image, Alert, ScrollView, FlatList, Dimensions } from 'react-native'
+import { View, Text, TouchableOpacity, Modal, TextInput, Image, Alert, ScrollView, FlatList, Dimensions, ToastAndroid } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import styles from '../styles/Main'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -13,16 +13,20 @@ let count = 0;
 
 const DataPanen = ({navigation}) => {
 
-  const [BaseURL, setBaseURL] = useState('https://alicestech.com/siketan/')
+  const [BaseURL, setBaseURL] = useState('https://siketan.com/')
   const [IDUser, setIDUser] = useState('')
   const [Role, setRole] = useState('')
   const [ArrowDatapanen, setArrowDatapanen] = useState('arrow-forward')
-  const [FormTambahData, setFormTambahData] = useState(false)
+  const [FormDataPanen, setFormDataPanen] = useState(false)
   const [Komoditas, setKomoditas] = useState('')
   const [Luas, setLuas] = useState('')
   const [Jumlah, setJumlah] = useState('')
   const [Lokasi, setLokasi] = useState('')
   const [ArrDataPanen, setArrDataPanen] = useState([])
+  const [ModalSettingPanen, setModalSettingPanen] = useState(false)
+  const [IDPanen, setIDPanen] = useState('')
+  const [EditDataPanen, setEditDataPanen] = useState(false)
+  const [TitleForm, setTitleForm] = useState('Tambah Data Panen')
 
   const GetDataUser = () => {
     BacaLokalJson('@DataUser').then(response => {
@@ -34,16 +38,26 @@ const DataPanen = ({navigation}) => {
     });
   }
 
-  const ShowFormTambahData = () => {
+  const ShowFormDataPanen = () => {
     count++
     if(count == 1){
         setArrowDatapanen('arrow-down');
-        setFormTambahData(true);
+        setFormDataPanen(true);
+        setTitleForm('Tambah Data Panen')
+        setKomoditas('')
+        setLuas('')
+        setJumlah('')
+        setLokasi('')
     }
     if(count > 1){
         setArrowDatapanen('arrow-forward');
-        setFormTambahData(false);
+        setFormDataPanen(false);
+        setTitleForm('Tambah Data Panen')
         count = 0;
+        setKomoditas('')
+        setLuas('')
+        setJumlah('')
+        setLokasi('')
     }
   }
 
@@ -53,7 +67,7 @@ const DataPanen = ({navigation}) => {
 
   const GetDataPanen = (id_user, role) => {
         var parameter = [];
-        if(role == 'Penyuluh'){
+        if(role != 'admin'){
             parameter = {
                 id_user : id_user,
             }
@@ -83,9 +97,76 @@ const DataPanen = ({navigation}) => {
       });
   }
 
+  const UbahData = () => {
+        var parameter = {
+            id_panen : IDPanen,
+            id_user : IDUser,
+            komoditas : Komoditas,
+            luas : Luas,
+            jumlah : Jumlah,
+            lokasi : Lokasi
+        }
+        POSTREQ('api/data_panen/edit', parameter).then(response=>{
+            if(response.status == true){
+                GetDataPanen(IDUser, Role);
+                ToastAndroid.showWithGravity(
+                    "Berhasil Mengubah Data",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER
+                );
+            }else{
+                ToastAndroid.showWithGravity(
+                    "Gagal Mengubah Data",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER
+                );
+            }
+      });
+  }
+
+  const OpenModalSetPanen = (id_panen, komoditas, luas, jumlah, lokasi) => {
+        setIDPanen(id_panen);
+        setModalSettingPanen(!ModalSettingPanen)
+        setKomoditas(komoditas);
+        setLuas(luas);
+        setJumlah(jumlah);
+        setLokasi(lokasi);
+  }
+
+  const UbahDataPanen = () => {
+      setTitleForm('Ubah Data Panen')
+      setEditDataPanen(true);
+      setArrowDatapanen('arrow-down');
+      setFormDataPanen(true);
+      setModalSettingPanen(!ModalSettingPanen)
+  }
+
+  const HapusData = () => {
+    var parameter = {
+        id_panen:IDPanen
+    }
+    GETREQ('api/data_panen/hapus', parameter).then(response=>{
+        console.log(response.result);
+        if(response.status == true){
+            GetDataPanen(IDUser, Role);
+            ToastAndroid.showWithGravity(
+                "Berhasil Menghapus Data",
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER
+            );
+        }else{
+            ToastAndroid.showWithGravity(
+                "Gagal Menghapus Data",
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER
+            );
+        }
+    });
+  }
+
   const Item = ({ id_panen, id_user, komoditas, luas, jumlah, lokasi}) => (
     <View style={{marginVertical:5, width:'97%', marginHorizontal:5}}>
-        <TouchableOpacity style={styles.Card}>
+        <TouchableOpacity onPress={()=>OpenModalSetPanen(id_panen, komoditas, luas, jumlah, lokasi)} style={styles.Card}>
         <View style={styles.Devider5}></View>
         <Text style={styles.textLargeBold}>Komoditas : {komoditas}</Text>
         <Text style={styles.textNormal}>Luas : {luas} ha</Text>
@@ -106,6 +187,37 @@ const DataPanen = ({navigation}) => {
 
   return (
     <SafeAreaProvider style={{flex:1, backgroundColor:'white'}}>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={ModalSettingPanen}
+          onRequestClose={() => {
+            setModalSettingPanen(!ModalSettingPanen);
+          }}
+        >
+          <View style={{flex: 1, alignItems: "center", justifyContent: 'center', padding: 10, backgroundColor:'rgba(0, 0, 0, 0.5)'}}>
+            <View style={{paddingHorizontal:20, paddingVertical:20, marginHorizontal:20, backgroundColor:'white', borderRadius:10, alignItems:'center', justifyContent:'center', width:'100%'}}>
+                <TouchableOpacity onPress={()=> setModalSettingPanen(!ModalSettingPanen)} style={{position:'absolute', top:10, right:10, zIndex:10}}>
+                    <Icon type='font-awesome' name="close" size={20} color="black" />
+                </TouchableOpacity>
+                <View style={styles.Devider5}></View>
+                <Text style={styles.textLargeBold}>Ubah Data Panen</Text>
+                <View style={styles.Devider5}></View>
+                <Text style={styles.textNormal}>Anda dapat mengubah data panen dan menghapus data panen dengan menekan salah satu tombol di bawah ini</Text>
+                <View style={styles.Devider5}></View>
+                <TouchableOpacity onPress={()=>UbahDataPanen()} style={styles.BtnSuccess}>
+                    <Text style={styles.TextBtnWhite}>Ubah Data</Text>
+                </TouchableOpacity>
+                <View style={styles.Devider5}></View>
+                <Text style={styles.textLargeBold}>PERHATIAN!</Text>
+                <Text style={styles.textNormal}>Data panen yang telah dihapus tidak dapat dikembalikan lagi</Text>
+                <View style={styles.Devider5}></View>
+                <TouchableOpacity onPress={()=>HapusData()} style={styles.BtnDanger}>
+                    <Text style={styles.TextBtnWhite}>Hapus Data</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+      </Modal>
       {/* Top Bar */}
       <View style={styles.CardRectangle}>
         <View style={{flexDirection:'row'}}>
@@ -118,16 +230,16 @@ const DataPanen = ({navigation}) => {
       <View style={styles.Devider5}></View>
       <View style={styles.container}>
         <View style={{paddingHorizontal:5}}>
-            <TouchableOpacity onPress={()=>ShowFormTambahData()} style={styles.CardRectangleRow}>
+            <TouchableOpacity onPress={()=>ShowFormDataPanen()} style={styles.CardRectangleRow}>
                 <View style={{flex:1}}>
-                    <Text style={styles.textNormalBold}>Tambah Data Panen</Text>
+                    <Text style={styles.textNormalBold}>{TitleForm}</Text>
                 </View>
                 <View>
                     <Icon type='ionicon' name={ArrowDatapanen} size={16} color='black' />
                 </View>
             </TouchableOpacity>
         </View>
-        {FormTambahData ?
+        {FormDataPanen ?
             <View style={{paddingHorizontal:5}}>
                 <View style={{marginTop:3}}></View>
                     <View style={styles.CardRectangle}>
@@ -197,10 +309,21 @@ const DataPanen = ({navigation}) => {
                             />
                         </View>
                         <View style={styles.Devider5}></View>
-                        <TouchableOpacity onPress={()=>SimpanData()} style={styles.BtnSuccess}>
-                            <Text style={styles.TextBtnWhite}>Simpan Data</Text>
-                        </TouchableOpacity>
-                        <View style={styles.Devider5}></View>
+                        {TitleForm != 'Ubah Data Panen' ?
+                            <View>
+                                <TouchableOpacity onPress={()=>SimpanData()} style={styles.BtnSuccess}>
+                                    <Text style={styles.TextBtnWhite}>Simpan Data</Text>
+                                </TouchableOpacity>
+                                <View style={styles.Devider5}></View>
+                            </View>
+                            :
+                            <View>
+                                <TouchableOpacity onPress={()=>UbahData()} style={styles.BtnSuccess}>
+                                    <Text style={styles.TextBtnWhite}>Ubah Data Panen</Text>
+                                </TouchableOpacity>
+                                <View style={styles.Devider5}></View>
+                            </View>
+                        }
                     </View>
             </View>
             :

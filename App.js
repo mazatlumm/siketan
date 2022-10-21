@@ -3,6 +3,9 @@
 import React, {useEffect, useState} from 'react';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import PushNotificationIOS from "@react-native-community/push-notification-ios";
+import PushNotification from "react-native-push-notification";
+import {SimpanLokal} from './src/localstorage'
 
 //contoh komponen ada disini
 import Components from './src/screens/Components';
@@ -16,11 +19,51 @@ import TokoTani from './src/screens/toko_tani/TokoTani';
 import Profile from './src/screens/Profile';
 import InfoTani from './src/screens/InfoTani';
 import DataPanen from './src/screens/DataPanen';
+import Chat from './src/screens/Chat';
+import RoomChat from './src/screens/RoomChat';
+import DetilBerita from './src/screens/DetilBerita';
 
 
 const Stack = createNativeStackNavigator();
 
 function App() {
+
+  const GetToken = () => {
+    PushNotification.configure({
+      onRegister: function (token) {
+        SimpanLokal(token.token,'@token').then(response=>{
+          console.log('Simpan Token = ' + response);
+        })
+      },
+    
+      onNotification: function (notification) {
+        console.log("NOTIFICATION:", notification);
+        notification.finish(PushNotificationIOS.FetchResult.NoData);
+      },
+    
+      onAction: function (notification) {
+        console.log("ACTION:", notification.action);
+        console.log("NOTIFICATION:", notification);
+      },
+    
+      onRegistrationError: function(err) {
+        console.error(err.message, err);
+      },
+
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true,
+      },
+    
+      popInitialNotification: true,
+      requestPermissions: true,
+    });
+  }
+  useEffect(() => {
+    GetToken()
+  }, [])
+  
   
   return (
     <NavigationContainer>
@@ -35,6 +78,9 @@ function App() {
         <Stack.Screen name="Profile" component={Profile} options={{headerShown:false}} />
         <Stack.Screen name="InfoTani" component={InfoTani} options={{headerShown:false}} />
         <Stack.Screen name="DataPanen" component={DataPanen} options={{headerShown:false}} />
+        <Stack.Screen name="Chat" component={Chat} options={{headerShown:false}} />
+        <Stack.Screen name="RoomChat" component={RoomChat} options={{headerShown:false}} />
+        <Stack.Screen name="DetilBerita" component={DetilBerita} options={{headerShown:false}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

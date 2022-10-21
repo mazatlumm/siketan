@@ -202,6 +202,7 @@ export default StyleSheet.create({
         backgroundColor:'white',
         paddingHorizontal:20,
         paddingVertical:10,
+        justifyContent:'center'
     },
     CardRectangleRow:{
         shadowColor: "#000",
@@ -372,5 +373,11 @@ export default StyleSheet.create({
         resizeMode:'contain',
         alignItems:'center',
         justifyContent:'center'
+    },
+    TumbnailBertia:{
+        flex: 1,
+        aspectRatio: 1.5,
+        resizeMode:'contain',
+        borderRadius:10
     }
 })

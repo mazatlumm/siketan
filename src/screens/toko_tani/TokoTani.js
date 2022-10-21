@@ -10,7 +10,7 @@ const windowHeight = parseInt((Dimensions.get('window').height).toFixed(0))-45;
 
 const TokoTani = ({navigation}) => {
 
-  const [BaseURL, setBaseURL] = useState('https://alicestech.com/siketan/')
+  const [BaseURL, setBaseURL] = useState('https://siketan.com/')
   const [IDUser, setIDUser] = useState('')
   const [IDProduk, setIDProduk] = useState('')
   const [NamaProduk, setNamaProduk] = useState('')

@@ -13,7 +13,7 @@ const windowHeight = parseInt((Dimensions.get('window').height).toFixed(0))-45;
 
 const KelolaProduk = ({navigation}) => {
 
-  const [BaseURL, setBaseURL] = useState('https://alicestech.com/siketan/')
+  const [BaseURL, setBaseURL] = useState('https://siketan.com/')
   const [ModalProduk, setModalProduk] = useState(false)
   const [IDUser, setIDUser] = useState('')
   const [IDProduk, setIDProduk] = useState('')
