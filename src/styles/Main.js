@@ -1,4 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+const windowWidth = parseInt((Dimensions.get('window').width).toFixed(0))-45;
+const windowHeight = parseInt((Dimensions.get('window').height).toFixed(0))-45;
+
 const SuccessColor = "#3b8132";
 const PrimaryColor = "#1065c0";
 const WarningColor = "#e47200";
@@ -379,5 +382,12 @@ export default StyleSheet.create({
         aspectRatio: 1.5,
         resizeMode:'contain',
         borderRadius:10
+    },
+    ImageLaporan:{
+        width:windowWidth-30,
+        height:windowWidth/2,
+        resizeMode:'stretch',
+        borderRadius:10,
+        marginHorizontal:5
     }
 })

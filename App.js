@@ -22,6 +22,7 @@ import DataPanen from './src/screens/DataPanen';
 import Chat from './src/screens/Chat';
 import RoomChat from './src/screens/RoomChat';
 import DetilBerita from './src/screens/DetilBerita';
+import LaporPenyuluh from './src/screens/LaporPenyuluh';
 
 
 const Stack = createNativeStackNavigator();
@@ -81,6 +82,7 @@ function App() {
         <Stack.Screen name="Chat" component={Chat} options={{headerShown:false}} />
         <Stack.Screen name="RoomChat" component={RoomChat} options={{headerShown:false}} />
         <Stack.Screen name="DetilBerita" component={DetilBerita} options={{headerShown:false}} />
+        <Stack.Screen name="LaporPenyuluh" component={LaporPenyuluh} options={{headerShown:false}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

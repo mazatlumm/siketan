@@ -77,9 +77,12 @@ const Dashboard = ({navigation}) => {
   }
 
   useEffect(() => {
-    CekToken()
-    GetDataUser()
-    GetRekomPenyuluh()
+    const unsubscribe = navigation.addListener('focus', () => {
+      CekToken()
+      GetDataUser()
+      GetRekomPenyuluh()
+    });
+    return unsubscribe;
   }, [Token, IDUser])
 
   const ActionTokoTani = (screen) => {
@@ -196,6 +199,13 @@ const Dashboard = ({navigation}) => {
               <View style={styles.Devider5}></View>
               <Text style={styles.B3Bold}>Hallo!</Text>
               <Text style={styles.B3}>{Nama}</Text>
+              {Role == 'Penyuluh' || Role == 'admin' ?
+                <TouchableOpacity onPress={()=>navigation.navigate('LaporPenyuluh')} style={styles.BtnSuccess}>
+                  <Text style={styles.TextBtnWhite}>Lapor Penyuluh!</Text>
+                </TouchableOpacity>
+                :
+                <View></View>
+              }
               <View style={styles.Devider10}></View>
             </View>
             <View style={{marginRight:10, marginLeft:10, borderWidth:5, borderColor:'green', borderRadius:20, justifyContent:'center', paddingHorizontal:10, paddingVertical:10}}>
