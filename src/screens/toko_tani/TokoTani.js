@@ -83,7 +83,7 @@ const TokoTani = ({navigation}) => {
       <Image source={{uri:BaseURL+'upload/produk/'+foto}} style={styles.ImageProduk} />
       <View style={styles.Devider5}></View>
       <Text style={styles.textLargeBold}>{nama_produk}</Text>
-      <Text style={styles.textNormal}>{stok} kg</Text>
+      <Text style={styles.textNormal}>Stok : {stok} kg</Text>
       <Text style={styles.textNormal}>{FormatRupiahGo(harga)}</Text>
       <Text style={styles.textNormalBold}>"{penjual}"</Text>
     </TouchableOpacity>
@@ -144,7 +144,7 @@ const TokoTani = ({navigation}) => {
                 <View style={{marginLeft:10}}>
                     <Text style={styles.textNormalBold}>{NamaProduk}</Text>
                     <Text style={styles.textNormal}>{FormatRupiahGo(Harga)}</Text>
-                    <Text style={styles.textNormal}>{Stok} kg</Text>
+                    <Text style={styles.textNormal}>Stok : {Stok} kg</Text>
                     <Text style={styles.textNormal}>Penjual : {NamaPenjual}</Text>
                     <Text style={styles.textNormal}>No WA/HP : {NoHp}</Text>
                     <View style={styles.Devider5}></View>
